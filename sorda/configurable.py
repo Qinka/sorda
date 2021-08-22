@@ -26,5 +26,6 @@ class Configurable:
         meta_dict: dict = cls.meta_dict
         parameters = {}
         for key in meta_dict.keys():
-            parameters[key] = config[meta_dict[key]]
+            if meta_dict[key] in config:
+                parameters[key] = config[meta_dict[key]]
         return cls(**parameters)
