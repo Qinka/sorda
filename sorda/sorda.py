@@ -1,6 +1,5 @@
 import yaml
 import multiprocessing
-multiprocessing.set_start_method('spawn')
 
 from .configurable import Configurable
 from .updater import UpdaterBase
