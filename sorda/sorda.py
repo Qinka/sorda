@@ -5,6 +5,7 @@ from .configurable import Configurable
 from .updater import UpdaterBase
 
 def with_new_process(actions, config, args, kwargs):
+    print('with new process')
     obj = actions(config)
     obj(*args, **kwargs)
 
