@@ -5,6 +5,10 @@ multiprocessing.set_start_method('spawn')
 from .configurable import Configurable
 from .updater import UpdaterBase
 
+def with_new_process(actions, config, args, kwargs):
+    obj = actions(config)
+    obj(*args, **kwargs)
+
 class Sorda:
     def __init__(self, actions: Configurable, gens: Configurable = None, new_process: bool = False):
         self._actions = actions
@@ -15,7 +19,7 @@ class Sorda:
         if 'meta' not in config:
             raise Exception("`meta' key in configure required")
         if self._new_process:
-            p = multiprocessing.Process(target=self._actions(config), args = args, kwargs = kwargs)
+            p = multiprocessing.Process(target=with_new_process, args=(self._actions, config, args, kwargs))
             print('config', config)
             p.start()
             p.join()
