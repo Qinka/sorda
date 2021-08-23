@@ -14,7 +14,7 @@ class Sorda:
         if 'meta' not in config:
             raise Exception("`meta' key in configure required")
         if self._new_process:
-            p = multiprocessing.Process(target=self._actions(config, args=args, kwargs=kwargs))
+            p = multiprocessing.Process(target=self._actions(config), args = args, kwargs = kwargs)
             print('config', config)
             p.start()
             p.join()
