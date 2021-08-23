@@ -19,7 +19,7 @@ class Configurable:
     def __call__(self, config: dict):
         """
         """
-        if 'meta' not in dict:
+        if 'meta' not in config:
             raise Exception("need meta to select")
 
         cls = self._meta[config['meta']]
