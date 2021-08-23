@@ -5,15 +5,15 @@ from .configurable import Configurable
 from .updater import UpdaterBase
 
 class Sorda:
-    def __init__(self, actions: Configurable, gens: Configurable = None, multi_process: bool = False):
+    def __init__(self, actions: Configurable, gens: Configurable = None, new_process: bool = False):
         self._actions = actions
         self._gens    = gens
-        self._multi_process = multi_process
+        self._new_process = new_process
 
     def do(self, config, args, kwargs):
         if 'meta' not in config:
             raise Exception("`meta' key in configure required")
-        if self._multi_process:
+        if self._new_process:
             p = multiprocessing.Process(target=self._actions(config, args=args, kwargs=kwargs))
             print('config', config)
             p.start()
