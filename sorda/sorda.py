@@ -1,7 +1,8 @@
 import yaml
-from yaml.loader import Loader
-from .configurable import Configurable
 import multiprocessing
+
+from .configurable import Configurable
+from .updater import UpdaterBase
 
 class Sorda:
     def __init__(self, actions: Configurable, gens: Configurable = None, multi_process: bool = False):
@@ -21,16 +22,19 @@ class Sorda:
             self._actions(config)(*args, **kwargs)
 
     def __call__(self, config_file, update_file = None, *args, **kwargs):
-        with open(config_file, 'r') as f:
-            configs = yaml.load_all(f.read(), Loader=yaml.FullLoader)
 
         if update_file is not None and self._gens is not None:
+            with open(config_file, 'r') as f:
+                config = yaml.load(f.read(), Loader=yaml.FullLoader)
             with open(update_file, 'r') as f:
                 updates = yaml.load_all(f.read(), Loader=yaml.FullLoader)
             for update in updates:
-                gen = self._gen(update)
+                gen: UpdaterBase = self._gen(update)
+                gen.load_origin(config)
                 for config in gen:
                     self.do(config, args, kwargs)
         else:
+            with open(config_file, 'r') as f:
+                configs = yaml.load_all(f.read(), Loader=yaml.FullLoader)
             for config in configs:
                 self.do(config, args, kwargs)
