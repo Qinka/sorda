@@ -1,5 +1,13 @@
 import types
 
+def function_wrap(cls):
+    def wrap(*args, **kwargs):
+        def real_wrap():
+            cls(*args, **kwargs)
+        return real_wrap
+    return wrap
+
+
 class Configurable:
     """Configurable
 
@@ -17,11 +25,7 @@ class Configurable:
             raise Exception("need `meta_dict' to parse")
 
         if isinstance(cls, types.FunctionType):
-            def wrap(*args, **kwargs):
-                def real():
-                    cls(*args, **kwargs)
-                return real
-            self._meta[name] = wrap
+            self._meta[name] = function_wrap(cls)
         else:
             self._meta[name] = cls
 
