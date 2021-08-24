@@ -1,3 +1,4 @@
+import types
 
 class Configurable:
     """Configurable
@@ -14,7 +15,15 @@ class Configurable:
         """
         if not hasattr(cls, 'meta_dict'):
             raise Exception("need `meta_dict' to parse")
-        self._meta[name] = cls
+
+        if isinstance(cls, types.FunctionType):
+            def wrap(*args, **kwargs):
+                def real():
+                    cls(*args, **kwargs)
+                return real
+            self._meta[name] = wrap
+        else:
+            self._meta[name] = cls
 
     def __call__(self, config: dict):
         """
