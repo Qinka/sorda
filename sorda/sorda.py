@@ -5,20 +5,21 @@ import types
 from .configurable import Configurable
 from .updater import UpdaterBase
 
-def with_new_process(actions, config, args, kwargs):
+def with_new_process(action, config, args, kwargs):
     print('with new process')
 
-    if isinstance(actions, types.FunctionType):
-        results = actions(config)
+    obj, i = action(config)
+
+    if i:
+        results = obj
     else:
-        obj = actions(config)
         results = obj(*args, **kwargs)
     return results
 
 class Sorda:
     def __init__(self, actions: Configurable, gens: Configurable = None, new_process: bool = False):
-        self._actions = actions
-        self._gens    = gens
+        self._actions     = actions
+        self._gens        = gens
         self._new_process = new_process
 
     def do(self, config, args, kwargs):
@@ -30,7 +31,13 @@ class Sorda:
             p.start()
             p.join()
         else:
-            self._actions(config)(*args, **kwargs)
+            obj, i = self._actions(config)
+
+            if i:
+                results = obj
+            else:
+                results = obj(*args, **kwargs)
+            return results
 
     def __call__(self, config_file, update_file = None, *args, **kwargs):
 

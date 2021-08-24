@@ -1,4 +1,5 @@
 
+import types
 
 class Configurable:
     """Configurable
@@ -9,6 +10,7 @@ class Configurable:
         """
         """
         self._meta = {}
+        self._type = {}
 
     def registry(self, name: str, cls: type):
         """
@@ -17,6 +19,7 @@ class Configurable:
             raise Exception("need `meta_dict' to parse")
 
         self._meta[name] = cls
+        self._type[name] = isinstance(cls, types.FunctionType)
 
     def __call__(self, config: dict):
         """
@@ -31,3 +34,6 @@ class Configurable:
             if meta_dict[key] in config:
                 parameters[key] = config[meta_dict[key]]
         return cls(**parameters)
+
+    def is_func(self, key):
+        return self._type(key)
