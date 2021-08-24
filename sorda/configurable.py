@@ -36,4 +36,4 @@ class Configurable:
         return cls(**parameters), self.is_func(config['meta'])
 
     def is_func(self, key):
-        return self._type(key)
+        return self._type[key]
