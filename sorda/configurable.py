@@ -1,11 +1,3 @@
-import types
-
-def function_wrap(cls):
-    def wrap(*args, **kwargs):
-        def real_wrap():
-            cls(*args, **kwargs)
-        return real_wrap
-    return wrap
 
 
 class Configurable:
@@ -24,10 +16,7 @@ class Configurable:
         if not hasattr(cls, 'meta_dict'):
             raise Exception("need `meta_dict' to parse")
 
-        if isinstance(cls, types.FunctionType):
-            self._meta[name] = function_wrap(cls)
-        else:
-            self._meta[name] = cls
+        self._meta[name] = cls
 
     def __call__(self, config: dict):
         """

@@ -1,13 +1,19 @@
 import yaml
 import multiprocessing
+import types
 
 from .configurable import Configurable
 from .updater import UpdaterBase
 
 def with_new_process(actions, config, args, kwargs):
     print('with new process')
-    obj = actions(config)
-    obj(*args, **kwargs)
+
+    if isinstance(actions, types.FunctionType):
+        results = actions(config)
+    else:
+        obj = actions(config)
+        results = obj(*args, **kwargs)
+    return results
 
 class Sorda:
     def __init__(self, actions: Configurable, gens: Configurable = None, new_process: bool = False):
