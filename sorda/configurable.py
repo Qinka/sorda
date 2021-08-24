@@ -33,7 +33,7 @@ class Configurable:
         for key in meta_dict.keys():
             if meta_dict[key] in config:
                 parameters[key] = config[meta_dict[key]]
-        return cls(**parameters)
+        return cls(**parameters), self.is_func(config['meta'])
 
     def is_func(self, key):
         return self._type(key)
