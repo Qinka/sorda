@@ -6,9 +6,9 @@ from .configurable import Configurable
 from .updater import UpdaterBase
 
 def with_new_process(action, config, args, kwargs):
-    print('with new process')
 
     obj, i = action(config)
+    print(i)
 
     if i:
         results = obj
@@ -26,18 +26,13 @@ class Sorda:
         if 'meta' not in config:
             raise Exception("`meta' key in configure required")
         if self._new_process:
+            print('with new process')
             p = multiprocessing.Process(target=with_new_process, args=(self._actions, config, args, kwargs))
             print('config', config)
             p.start()
             p.join()
         else:
-            obj, i = self._actions(config)
-
-            if i:
-                results = obj
-            else:
-                results = obj(*args, **kwargs)
-            return results
+            return with_new_process(self._actions, config, args, kwargs)
 
     def __call__(self, config_file, update_file = None, *args, **kwargs):
 
