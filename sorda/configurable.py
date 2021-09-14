@@ -1,5 +1,6 @@
 
 import types
+from typing import Tuple
 
 class Configurable:
     """Configurable
@@ -20,6 +21,31 @@ class Configurable:
 
         self._meta[name] = cls
         self._type[name] = isinstance(cls, types.FunctionType)
+
+    def registry_(self, *args: Tuple[str, type]):
+        """
+        """
+
+        if len(args) == 1 and isinstance(args[0], str):
+            name = args[0]
+            def registry_wrap(cls: type):
+                if not hasattr(cls, 'meta_dict'):
+                    raise Exception("need `meta_dict' to parse")
+
+                self._meta[name] = cls
+                self._type[name] = isinstance(cls, types.FunctionType)
+                return cls
+            return registry_wrap
+
+        elif len(args) == 2 and isinstance(args[0], str) and isinstance(args[1], (type, types.FunctionType)):
+            name, cls = args
+            if not hasattr(cls, 'meta_dict'):
+                raise Exception("need `meta_dict' to parse")
+
+            self._meta[name] = cls
+            self._type[name] = isinstance(cls, types.FunctionType)
+        else:
+            raise TypeError("registry need name or a name with class")
 
     def __call__(self, config: dict):
         """
