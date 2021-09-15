@@ -8,5 +8,8 @@ setup(
     description="Run excute",
     long_description="Run and excute, see https://github.com/Qinka/sorda",
     url="https://github.com/Qinka/sorda",
-    packages=find_packages()
+    packages=find_packages(),
+    install_requires=[
+        "pyyaml"
+    ],
 )
