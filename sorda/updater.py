@@ -81,8 +81,9 @@ class GridEnum(MetaGrid):
     def __len__(self):
         return self._limit
 
-    def __next__(self):
-        return self._items[self._count]
+    @property
+    def value(self):
+        return self._range[self._count]
 
 class GridExp(MetaGrid):
     def __init__(self, init: float, step: float, n: int):
@@ -103,8 +104,9 @@ class GridExp(MetaGrid):
     def __len__(self):
         return self._limit
 
-    def __next__(self):
-        return self._value
+    @property
+    def value(self):
+        return self._range[self._count]
 
 
 class GridSearch(UpdaterBase):
