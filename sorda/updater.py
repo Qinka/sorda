@@ -170,7 +170,8 @@ class GridSearch(UpdaterBase):
         self._counts = [0] * len(self._limits)
 
     def load_origin(self, cfg: dict):
-        self._config = GridSearch.config_replace(cfg.copy(), self._update_static)
+        self._config = cfg.copy()
+        GridSearch.config_replace(self._config, self._update_static)
 
     # def reset(self, ):
     #     self._config = {}
