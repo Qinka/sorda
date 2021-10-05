@@ -43,8 +43,9 @@ class MetaGrid(metaclass = ABCMeta):
     def __len__(self):
         raise NotImplementedError()
 
+    @property
     @abstractmethod
-    def __next__(self):
+    def value(self):
         raise NotImplementedError()
 
 class GridRange(MetaGrid):
@@ -59,16 +60,14 @@ class GridRange(MetaGrid):
         self._limit = len(self._range)
 
     def step(self):
-        self._count += 1
+        self._count = (self._count + 1) % self._limit
 
     def __len__(self):
         return self._limit
 
-    def __next__(self):
-        if self._count < self._limit:
-            return self._range[self._count]
-        else:
-            raise StopIteration
+    @property
+    def value(self):
+        return self._range[self._count]
 
 class GridEnum(MetaGrid):
     def __init__(self, items):
@@ -77,36 +76,35 @@ class GridEnum(MetaGrid):
         self._limit = len(items)
 
     def step(self):
-        self._count += 1
+        self._count = (self._count + 1) % self._limit
 
     def __len__(self):
         return self._limit
 
     def __next__(self):
-        if self._count < self._limit:
-            return self._items[self._count]
-        else:
-            raise StopIteration
+        return self._items[self._count]
 
 class GridExp(MetaGrid):
     def __init__(self, init: float, step: float, n: int):
         self._count = 0
         self._limit = n
+        self._init  = init
         self._value = init
         self._step  = step
 
     def step(self):
         self._count += 1
-        self._value *= self._step
+        if self._count < self._limit:
+            self._value *= self._step
+        else:
+            self._count = 0
+            self._value = self._init
 
     def __len__(self):
         return self._limit
 
     def __next__(self):
-        if self._count < self._limit:
-            return self._value
-        else:
-            raise StopIteration
+        return self._value
 
 
 class GridSearch(UpdaterBase):
@@ -186,10 +184,10 @@ class GridSearch(UpdaterBase):
     def step(self):
         for i in range(len(self._counts)):
             self._counts[i] += 1
+            self._grids[i].step()
             if self._counts[i] < self._limits[i]:
                 break
             else:
-                self._grids[i].step()
                 self._counts[i] = 0
                 continue
 
