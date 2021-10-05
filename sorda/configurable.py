@@ -61,7 +61,7 @@ class Configurable:
                 parameters[key] = config[meta_dict[key]]
 
         if hasattr(cls, 'sorda_raw_config') and cls.sorda_raw_config:
-            parameters('_raw_config') = config
+            parameters['_raw_config'] = config
 
         return cls(**parameters), self.is_func(config['meta'])
 
