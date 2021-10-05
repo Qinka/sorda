@@ -151,7 +151,7 @@ class GridSearch(UpdaterBase):
                 if isinstance(update[p], dict) and isinstance(config[p], dict):
                     GridSearch.config_replace(config[p], update[p])
                 elif isinstance(update[p], MetaGrid):
-                    config[p] = next(update[p])
+                    config[p] = update[p].value
                 else:
                     config[p] = update[p]
             else:
