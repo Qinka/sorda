@@ -106,7 +106,7 @@ class GridExp(MetaGrid):
 
     @property
     def value(self):
-        return self._range[self._count]
+        return self._value
 
 
 class GridSearch(UpdaterBase):
