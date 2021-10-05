@@ -197,7 +197,7 @@ class GridSearch(UpdaterBase):
         if self._count < self._limit:
             self._count += 1
             config = self._config.copy()
-            GridSearch.config_replace(self._update_dynamic)
+            GridSearch.config_replace(config, self._update_dynamic)
             self.step()
             return config
         else:
