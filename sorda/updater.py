@@ -50,7 +50,7 @@ class MetaGrid(metaclass = ABCMeta):
 
 class GridRange(MetaGrid):
     @overload
-    def __init__(self, start: SupportsIndex, stop: SupportsIndex, step: SupportsIndex = None):
+    def __init__(self, start: int, stop: int, step: int = None):
         if step is None:
             self._range = list(range(start, stop))
         else:
