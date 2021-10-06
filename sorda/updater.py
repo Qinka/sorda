@@ -1,6 +1,6 @@
 
 from abc import ABCMeta, abstractmethod
-from typing import SupportsIndex, Tuple, overload
+from typing import Tuple, overload
 from functools import reduce
 
 
