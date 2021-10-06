@@ -82,7 +82,7 @@ class GridEnum(MetaGrid):
 
     @property
     def value(self):
-        return self._range[self._count]
+        return self._items[self._count]
 
 class GridExp(MetaGrid):
     def __init__(self, init: float, step: float, n: int):
