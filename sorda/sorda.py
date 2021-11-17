@@ -7,14 +7,8 @@ from .updater import UpdaterBase
 
 def with_new_process(action, config, args, kwargs):
 
-    obj, i = action(config)
-    print(i)
-
-    if i:
-        results = obj
-    else:
-        results = obj(*args, **kwargs)
-    return results
+    obj= action(config)
+    return obj(*args, **kwargs)
 
 class Sorda:
     def __init__(self, actions: Configurable, gens: Configurable = None, new_process: bool = False):
