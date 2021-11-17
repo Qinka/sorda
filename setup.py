@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sorda",
-    version="0.1",
+    version="0.1.2.dev-10",
     author="qinka",
     author_email="me@qinka.pro",
     description="Run excute",
