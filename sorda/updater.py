@@ -148,15 +148,12 @@ class GridSearch(UpdaterBase):
     @staticmethod
     def config_replace(config: dict, update: dict):
         for p in update:
-            if p in config:
-                if isinstance(update[p], dict) and isinstance(config[p], dict):
-                    GridSearch.config_replace(config[p], update[p])
-                elif isinstance(update[p], MetaGrid):
-                    config[p] = update[p].value
-                else:
-                    config[p] = update[p]
+            if isinstance(update[p], dict) and isinstance(config[p], dict):
+                GridSearch.config_replace(config[p], update[p])
+            elif isinstance(update[p], MetaGrid):
+                config[p] = update[p].value
             else:
-                print("warning", "unhandled key", p, 'in config', config)
+                config[p] = update[p]
 
 
     def __init__(self, update: dict):
