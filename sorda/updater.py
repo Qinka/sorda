@@ -115,21 +115,21 @@ class GridSearch(UpdaterBase):
     }
 
     @staticmethod
-    def recursive_update_split(up: dict) -> Tuple[dict, dict, list]:
+    def recursive_update_split(up: dict, meta_key: str = 'meta_updater') -> Tuple[dict, dict, list]:
         s = {}
         d = {}
         n = []
 
         for k in up:
             if isinstance(up[k], dict):
-                if 'meta' in up[k]:
+                if meta_key in up[k]:
                     cfg = up[k]
                     # grid search updater
-                    if cfg['meta'] == 'range':
+                    if cfg[meta_key] == 'range':
                         grid = GridRange(start = cfg['start'], stop = cfg['stop'], step = cfg.get('step', None))
-                    elif cfg['meta'] == 'exp':
+                    elif cfg[meta_key] == 'exp':
                         grid = GridExp(cfg['init'], cfg['step'], cfg['n'])
-                    elif cfg['meta'] == 'items':
+                    elif cfg[meta_key] == 'items':
                         grid = GridEnum(cfg['items'])
                     n.append(grid)
                     d[k] = grid
