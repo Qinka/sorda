@@ -36,7 +36,7 @@ class Sorda:
             with open(update_file, 'r') as f:
                 updates = yaml.load_all(f.read(), Loader=yaml.FullLoader)
             for update in updates:
-                gen: UpdaterBase = self._gens(update)[0]
+                gen: UpdaterBase = self._gens(update)
                 gen.load_origin(config)
                 for config in gen:
                     self.do(config, args, kwargs)
